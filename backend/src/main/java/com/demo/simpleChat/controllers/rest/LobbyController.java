@@ -33,9 +33,9 @@ public class LobbyController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public Collection<String> joinLobby(@RequestBody JoinRequestDTO request) {
+    public void joinLobby(@RequestBody JoinRequestDTO request) {
         template.convertAndSend(LOBBY_USER_ADD_TOPIC, request.getUser());
-        return lobbyService.userJoined(request.getUser(), request.getSessionId());
+        lobbyService.userJoined(request.getUser(), request.getSessionId());
     }
 
     @RequestMapping(value = "/users/{userName}", method = RequestMethod.DELETE)

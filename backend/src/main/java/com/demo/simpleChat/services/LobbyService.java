@@ -21,11 +21,13 @@ public class LobbyService {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public Collection<String> userJoined(String userName, String sessionId) {
+        * Login user.
+        *
+        * @param user user name.
+     * @return was user logged in or not.
+        */
+    public void userJoined(String userName, String sessionId) {
         users.put(userName, sessionId);
-        return users.keySet();
     }
 
     /**

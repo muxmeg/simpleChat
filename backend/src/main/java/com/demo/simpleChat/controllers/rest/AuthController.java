@@ -1,8 +1,8 @@
 package com.demo.simpleChat.controllers.rest;
 
-import static com.chat.App.REST_SERVICE_PREFIX;
+import static com.demo.simpleChat.AppConfig.REST_SERVICE_PREFIX;
 
-import com.chat.services.AuthService;
+import com.demo.simpleChat.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;

@@ -1,0 +1,11 @@
+.page {
+  font-family: "Helvetica Neue", sans-serif;
+  height: 100%;
+}
+
+.body {
+  width: 80vw;
+  margin: auto;
+  display: flex;
+  background-color: #fff;
+}
