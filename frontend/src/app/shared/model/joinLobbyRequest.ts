@@ -2,6 +2,6 @@
  * Data for lobby join request.
  */
 export class JoinLobbyRequest {
-  user: string;
+  username: string;
   sessionId: string;
 }

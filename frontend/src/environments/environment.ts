@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   rest_url: 'http://localhost:8080/rest/',
-  ws_url: 'http://localhost:8080/websocket'
+  ws_url: 'ws://localhost:8080/ws/websocket'
 };
 
 

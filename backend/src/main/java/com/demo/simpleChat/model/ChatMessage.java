@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 public class ChatMessage {
-  private String message;
+  private String body;
   private String sender;
   private LocalDateTime date;
 }

@@ -1,6 +1,8 @@
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {LoggedInGuard} from './guards/LogInGuard';
+import {StompService} from '@stomp/ng2-stompjs';
 
 // shared components and model
 @NgModule({
@@ -14,7 +16,7 @@ import {NgModule} from '@angular/core';
     FormsModule
   ],
   entryComponents: [],
-  providers: []
+  providers: [LoggedInGuard]
 })
 export class SharedModule {
 }

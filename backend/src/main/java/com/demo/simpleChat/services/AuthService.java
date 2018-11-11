@@ -8,28 +8,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    // prototype substitution for real login/registration with DB
-    private final Set<String> currentUsers = Collections.synchronizedSet(new HashSet<>());;
+  // prototype substitution for real login/registration with DB
+  private final Set<String> currentUsers = Collections.synchronizedSet(new HashSet<>());
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean loginUser (String user) {
-        synchronized (currentUsers) {
-            if (currentUsers.contains(user)) {
-                return false;
-            }
-            currentUsers.add(user);
-            return true;
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public boolean loginUser(String user) {
+    synchronized (currentUsers) {
+      if (currentUsers.contains(user)) {
+        return false;
+      }
+      currentUsers.add(user);
+      return true;
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void logoutUser (String user) {
-        synchronized (currentUsers) {
-            currentUsers.remove(user);
-        }
+  /**
+   * {@inheritDoc}
+   */
+  public void logoutUser(String user) {
+    synchronized (currentUsers) {
+      currentUsers.remove(user);
     }
+  }
 }

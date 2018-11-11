@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 
 export class LoginComponent {
 
-  userName: string;
+  username: string;
   nameInvalid = false;
 
   constructor(private authService: AuthService, private router: Router) {
@@ -18,10 +18,10 @@ export class LoginComponent {
 
   logIn(): void {
     const self = this;
-    if (this.userName) {
-      this.authService.authenticateUser(this.userName).subscribe((success: boolean) => {
+    if (this.username) {
+      this.authService.authenticateUser(this.username).subscribe((success: boolean) => {
         if (success) {
-          this.userName = '';
+          this.username = '';
           self.router.navigate(['/lobby']);
         } else {
           self.nameInvalid = true;

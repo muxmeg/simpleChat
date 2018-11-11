@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './login/login.component';
+import {LoggedInGuard} from './shared/guards/LogInGuard';
 
 const routes: Routes = [{
   path: '',
@@ -8,6 +9,7 @@ const routes: Routes = [{
 },
   {
   path: 'lobby',
+    canActivate: [LoggedInGuard],
     loadChildren: '../app/lobby/lobby.module#LobbyModule'
 },
   {

@@ -2,45 +2,71 @@ package com.demo.simpleChat.controllers.rest;
 
 import static com.demo.simpleChat.AppConfig.REST_SERVICE_PREFIX;
 
+import com.demo.simpleChat.controllers.websocket.LobbyWSController;
+import com.demo.simpleChat.dto.ChatMessageDTO;
 import com.demo.simpleChat.dto.JoinRequestDTO;
+import com.demo.simpleChat.dto.LobbyUserUpdateDTO;
 import com.demo.simpleChat.services.LobbyService;
 import java.util.Collection;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.stream.Collectors;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = REST_SERVICE_PREFIX + "lobby", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+@RequestMapping(path = REST_SERVICE_PREFIX
+    + "lobby", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 public class LobbyController {
 
-    private static final String LOBBY_USER_ADD_TOPIC = "/topic/lobby/userJoined";
-    public static final String LOBBY_USER_LEAVE_TOPIC = "/topic/lobby/userLeft";
+  private final SimpMessagingTemplate template;
+  private final LobbyService lobbyService;
+  private final LobbyWSController lobbyWSController;
 
-    private final SimpMessagingTemplate template;
-    private final LobbyService lobbyService;
+  public LobbyController(LobbyService lobbyService, SimpMessagingTemplate template,
+      LobbyWSController lobbyWSController) {
+    this.lobbyService = lobbyService;
+    this.template = template;
+    this.lobbyWSController = lobbyWSController;
+  }
 
-    @Autowired
-    public LobbyController(LobbyService lobbyService, SimpMessagingTemplate template) {
-        this.lobbyService = lobbyService;
-        this.template = template;
-    }
+  @PostMapping(value = "/users")
+  public void joinLobby(@RequestBody JoinRequestDTO request) {
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public void joinLobby(@RequestBody JoinRequestDTO request) {
-        template.convertAndSend(LOBBY_USER_ADD_TOPIC, request.getUser());
-        lobbyService.userJoined(request.getUser(), request.getSessionId());
-    }
+    lobbyService.userJoined(request.getUsername(), request.getSessionId());
+    lobbyWSController.userStatusUpdate(LobbyUserUpdateDTO.builder()
+        .username(request.getUsername())
+        .joined(true)
+        .build());
+  }
 
-    @RequestMapping(value = "/users/{userName}", method = RequestMethod.DELETE)
-    public void leaveLobby(@PathVariable String userName) {
-        template.convertAndSend(LOBBY_USER_LEAVE_TOPIC, userName);
-        lobbyService.userLeave(userName);
-    }
+  @GetMapping(value = "/users")
+  public Collection<String> findLobbyUsers() {
+    return lobbyService.findUsers();
+  }
+
+  @GetMapping(value = "/messages")
+  public Collection<ChatMessageDTO> findSavedMessages(@RequestParam(required = false,
+      defaultValue = "0") int limit) {
+    return lobbyService.findMessageHistory(limit).stream()
+        .map(ChatMessageDTO::fromEntity)
+        .collect(Collectors.toList());
+  }
+
+  @DeleteMapping(value = "/users/{username}")
+  public void leaveLobby(@PathVariable String username) {
+    lobbyWSController.userStatusUpdate(LobbyUserUpdateDTO.builder()
+        .username(username)
+        .joined(true)
+        .build());
+    lobbyService.userLeave(username);
+  }
 }

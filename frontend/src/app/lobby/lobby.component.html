@@ -1,1 +1,54 @@
-<div>ready!</div>
+<div class="container container-table">
+  <div class="row vertical-center-row">
+    <div class="col-sm-12">
+      <span class="pull-right">You've logged in as <strong>{{username}}</strong></span>
+    </div>
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="page-container-medium">
+            <table class="table">
+              <tbody>
+              <tr *ngFor="let message of messages">
+                <td class="chat-message" [ngSwitch]="message.sender !== username">
+                  <div *ngSwitchCase="true">
+                    <div class="chat-message__sender">{{message.sender}}</div>
+                    <div class="chat-message__body">{{message.body}}</div>
+                    <div class="chat-message__date">{{message.date}}</div>
+                  </div>
+                  <div *ngSwitchCase="false" class="chat-message-wrapper">
+                    <div class="chat-message__sender">You</div>
+                    <div class="chat-message__body">{{message.body}}</div>
+                    <div class="chat-message__date">{{message.date}}</div>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="well well-sm col-sm-3">
+          <div class="page-container-medium">
+            <p *ngFor="let user of users" [ngClass]="{'text-success': user === username}">
+              {{ user }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row separator">
+        <div class="col-sm-9">
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="userMessage"
+                   (keydown.enter)="sendMessage()"/>
+            <span class="input-group-btn">
+              <button class="btn btn-default" (click)="sendMessage()">
+                Send
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

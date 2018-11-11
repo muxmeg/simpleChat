@@ -1,8 +1,8 @@
 /**
  * Data for lobby message.
  */
-export class ChatMessage {
-  user: string;
-  message: string;
-  date: string;
+export interface ChatMessage {
+  sender: string;
+  body: string;
+  date: Date;
 }

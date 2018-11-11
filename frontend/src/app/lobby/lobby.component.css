@@ -1,0 +1,20 @@
+td.chat-message {
+  word-wrap: break-word;
+}
+
+.chat-message-wrapper {
+  padding: 10px;
+  border: 1px solid #E1E2E4;
+  border-radius: 10px;
+}
+
+.chat-message__sender {
+  color: #B8BCBF;
+}
+
+.chat-message__body {
+}
+
+.chat-message__date {
+  color: #B8BCBF;
+}

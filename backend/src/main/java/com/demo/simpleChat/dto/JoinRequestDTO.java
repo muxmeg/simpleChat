@@ -8,5 +8,5 @@ import lombok.Value;
 @Value
 public class JoinRequestDTO {
   private String sessionId;
-  private String user;
+  private String username;
 }
