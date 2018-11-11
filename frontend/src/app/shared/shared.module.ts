@@ -2,7 +2,7 @@ import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {LoggedInGuard} from './guards/LogInGuard';
-import {StompService} from '@stomp/ng2-stompjs';
+import {AutoScrollDownDirective} from './directives/auto-scrollDown';
 
 // shared components and model
 @NgModule({
@@ -10,10 +10,11 @@ import {StompService} from '@stomp/ng2-stompjs';
     CommonModule,
     FormsModule
   ],
-  declarations: [],
+  declarations: [AutoScrollDownDirective],
   exports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    AutoScrollDownDirective
   ],
   entryComponents: [],
   providers: [LoggedInGuard]

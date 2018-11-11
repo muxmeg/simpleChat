@@ -1,20 +1,35 @@
-td.chat-message {
+.users {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.chat-messages {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.chat-messages-table td {
+  border-top: none;
+}
+
+.chat-messages-item {
   word-wrap: break-word;
 }
 
-.chat-message-wrapper {
+.chat-messages-item-wrapper {
   padding: 10px;
   border: 1px solid #E1E2E4;
   border-radius: 10px;
 }
 
-.chat-message__sender {
+.chat-messages-item__sender {
   color: #B8BCBF;
 }
 
-.chat-message__body {
+.chat-messages-item__body {
+  font-size: 1.1rem;
 }
 
-.chat-message__date {
+.chat-messages-item__date {
   color: #B8BCBF;
 }
