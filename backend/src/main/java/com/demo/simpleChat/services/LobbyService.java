@@ -1,7 +1,9 @@
 package com.demo.simpleChat.services;
 
+import com.demo.simpleChat.dto.ChatMessageDTO;
 import com.demo.simpleChat.model.ChatMessage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,6 +16,7 @@ public class LobbyService {
 
   //prototype container for all lobby data. must be stored on a separate node in the real application
   private final ConcurrentHashMap<String, String> users = new ConcurrentHashMap<>();
+  private final List<ChatMessage> messages = Collections.synchronizedList(new ArrayList<>());;
 
   private final AuthService authService;
 
@@ -62,7 +65,11 @@ public class LobbyService {
   }
 
   public List<ChatMessage> findMessageHistory(int limit) {
-    return new ArrayList<>();
+    return messages.subList(Math.max(messages.size() - limit, 0), messages.size());
+  }
+
+  public void onChatMessageReceive(ChatMessageDTO messageDTO) {
+    messages.add(messageDTO.toEntity());
   }
 
 }

@@ -25,4 +25,12 @@ public class ChatMessageDTO {
         .sender(chatMessage.getSender())
         .build();
   }
+
+  public ChatMessage toEntity() {
+    return ChatMessage.builder()
+        .body(body)
+        .date(date)
+        .sender(sender)
+        .build();
+  }
 }
