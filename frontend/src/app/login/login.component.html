@@ -1,1 +1,15 @@
-<div>ready!</div>
+<div class="container container-table login-offset">
+  <div class="row vertical-center-row">
+    <form #loginForm="ngForm" class="login-form">
+      <div class="form-group">
+        <label for="userName" class="control-label">Your name:</label>
+        <input type="text" class="form-control input-lg" id="userName" name="userName"
+               placeholder="name" [(ngModel)]="userName" required maxlength="15">
+        <span class="text-danger" *ngIf="nameInvalid">This login been already used</span>
+      </div>
+      <button class="btn btn-default" (click)="logIn()"
+              [disabled]="!loginForm.form.valid">Log in
+      </button>
+    </form>
+  </div>
+</div>
