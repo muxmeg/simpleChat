@@ -4,8 +4,8 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {StompService} from '@stomp/ng2-stompjs';
 import {ChatMessage} from '../shared/model/chatMessage';
-import {Message} from '@stomp/stompjs';
-import {JoinLobbyRequest} from '../shared/model/joinLobbyRequest';
+import {map} from 'rxjs/operators';
+import {LobbyUserUpdate} from '../shared/model/lobbyUserUpdate';
 
 /**
  * Lobby service.
@@ -21,10 +21,19 @@ export class LobbyService {
   /**
    * User joins the lobby.
    *
-   * @param request dto containing user name and websocket session id.
+   * @param username name of the user joined.
    */
-  joinLobby(request: JoinLobbyRequest): Observable<void> {
-    return this.http.post<void>(this.REST_SERVICE_URL + 'users/', request);
+  joinLobby(username: string): Observable<void> {
+    return this.http.put<void>(this.REST_SERVICE_URL + 'users/' + username, {});
+  }
+
+  /**
+   * User leaves the lobby.
+   *
+   * @param username name of the user left.
+   */
+  leaveLobby(username: string): Observable<void> {
+    return this.http.delete<void>(this.REST_SERVICE_URL + 'users/' + username);
   }
 
   findLobbyUsers(): Observable<string[]> {
@@ -36,12 +45,14 @@ export class LobbyService {
       {params: {'limit': '30'}});
   }
 
-  subscribeForMessages(): Observable<Message> {
-    return this.stompService.subscribe('/topic/lobbyMessages');
+  subscribeForMessages(): Observable<ChatMessage> {
+    return this.stompService.subscribe('/topic/lobbyMessages')
+    .pipe(map(message => JSON.parse(message.body)));
   }
 
-  subscribeForUserUpdates(): Observable<Message> {
-    return this.stompService.subscribe('/topic/lobbyUsers');
+  subscribeForUserUpdates(): Observable<LobbyUserUpdate> {
+    return this.stompService.subscribe('/topic/lobbyUsers')
+    .pipe(map(message => JSON.parse(message.body)));
   }
 
   postMessage(message: ChatMessage): void {

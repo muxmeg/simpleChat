@@ -1,7 +1,11 @@
 <div class="container container-table">
   <div class="row">
     <div class="col-sm-12 text-right">
-      <span>You've logged in as <strong>{{username}}</strong></span>
+      <span>You've logged in as <strong>{{username}}</strong>
+        <button class="btn btn-link" (click)="userLeave()">
+          logout
+        </button>
+      </span>
     </div>
     <div class="col-sm-12">
       <div class="row">

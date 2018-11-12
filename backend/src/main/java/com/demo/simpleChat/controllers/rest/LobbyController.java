@@ -4,7 +4,6 @@ import static com.demo.simpleChat.AppConfig.REST_SERVICE_PREFIX;
 
 import com.demo.simpleChat.controllers.websocket.LobbyWSController;
 import com.demo.simpleChat.dto.ChatMessageDTO;
-import com.demo.simpleChat.dto.JoinRequestDTO;
 import com.demo.simpleChat.dto.LobbyUserUpdateDTO;
 import com.demo.simpleChat.services.LobbyService;
 import java.util.Collection;
@@ -15,8 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,12 +36,12 @@ public class LobbyController {
     this.lobbyWSController = lobbyWSController;
   }
 
-  @PostMapping(value = "/users")
-  public void joinLobby(@RequestBody JoinRequestDTO request) {
+  @PutMapping(value = "/users/{username}")
+  public void joinLobby(@PathVariable String username) {
 
-    lobbyService.userJoined(request.getUsername(), request.getSessionId());
+    lobbyService.userJoined(username);
     lobbyWSController.userStatusUpdate(LobbyUserUpdateDTO.builder()
-        .username(request.getUsername())
+        .username(username)
         .joined(true)
         .build());
   }

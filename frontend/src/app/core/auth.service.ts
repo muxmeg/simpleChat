@@ -27,6 +27,13 @@ export class AuthService {
   }
 
   /**
+   * Logout current user.
+   */
+  logoutUser(): void {
+    this.username = null;
+  }
+
+  /**
    * Is current user authenticated.
    * @returns authentication status.
    */
