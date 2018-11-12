@@ -4,4 +4,12 @@
 
 .login-form {
   margin: 0 auto;
+  padding: 1.25rem;
+  border: 1px solid #f8f9fa!important;
+  border-radius: .25rem;
+}
+
+.login-form__label {
+  font-size: 15px;
+  font-weight: bold;
 }
