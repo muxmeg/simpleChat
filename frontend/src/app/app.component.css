@@ -9,3 +9,10 @@
   display: flex;
   background-color: #fff;
 }
+
+@media only screen and (max-width: 600px) {
+  .body {
+    width: 100%;
+  }
+}
+
