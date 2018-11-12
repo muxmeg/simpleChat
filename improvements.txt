@@ -1,0 +1,8 @@
+additional tests + integration tests
+auto login by cookies
+auto logout
+store logs in bd instead of memory
+better exception handling for frontend and backend
+data validation
+add view users button for mobile
+personal chats
