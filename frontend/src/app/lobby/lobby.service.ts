@@ -20,7 +20,6 @@ export class LobbyService {
 
   /**
    * User joins the lobby.
-   *
    * @param username name of the user joined.
    */
   joinLobby(username: string): Observable<void> {
@@ -29,32 +28,51 @@ export class LobbyService {
 
   /**
    * User leaves the lobby.
-   *
    * @param username name of the user left.
    */
   leaveLobby(username: string): Observable<void> {
     return this.http.delete<void>(this.REST_SERVICE_URL + 'users/' + username);
   }
 
+  /**
+   * Find users in lobby.
+   * @returns list of usernames.
+   */
   findLobbyUsers(): Observable<string[]> {
     return this.http.get<string[]>(this.REST_SERVICE_URL + 'users');
   }
 
-  findLobbyMessages(): Observable<ChatMessage[]> {
+  /**
+   * Find message history.
+   * @returns list of chat messages.
+   */
+  findLobbyMessages(limit: number): Observable<ChatMessage[]> {
     return this.http.get<ChatMessage[]>(this.REST_SERVICE_URL + 'messages',
-      {params: {'limit': '30'}});
+      {params: {'limit': limit.toString()}});
   }
 
+  /**
+   * Subscribe for new messages in lobby.
+   * @returns observable for new chat messages.
+   */
   subscribeForMessages(): Observable<ChatMessage> {
     return this.stompService.subscribe('/topic/lobbyMessages')
     .pipe(map(message => JSON.parse(message.body)));
   }
 
+  /**
+   * Subscribe for user status updates in lobby.
+   * @returns observable user status updates.
+   */
   subscribeForUserUpdates(): Observable<LobbyUserUpdate> {
     return this.stompService.subscribe('/topic/lobbyUsers')
     .pipe(map(message => JSON.parse(message.body)));
   }
 
+  /**
+   * Send message to lobby.
+   * @param message message to send.
+   */
   postMessage(message: ChatMessage): void {
     return this.stompService.publish('/ws/lobbyMessage', JSON.stringify(message));
   }

@@ -63,7 +63,7 @@ public class LobbyController {
   public void leaveLobby(@PathVariable String username) {
     lobbyWSController.userStatusUpdate(LobbyUserUpdateDTO.builder()
         .username(username)
-        .joined(true)
+        .joined(false)
         .build());
     lobbyService.userLeave(username);
   }

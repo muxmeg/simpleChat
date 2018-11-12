@@ -12,24 +12,27 @@ public class AuthService {
   private final Set<String> currentUsers = Collections.synchronizedSet(new HashSet<>());
 
   /**
-   * {@inheritDoc}
+   * Login user.
+   * @param username name of the user.
+   * @return if login was successful or not.
    */
-  public boolean loginUser(String user) {
+  public boolean loginUser(String username) {
     synchronized (currentUsers) {
-      if (currentUsers.contains(user)) {
+      if (currentUsers.contains(username)) {
         return false;
       }
-      currentUsers.add(user);
+      currentUsers.add(username);
       return true;
     }
   }
 
   /**
-   * {@inheritDoc}
+   * Logout user.
+   * @param username name of the user.
    */
-  public void logoutUser(String user) {
+  public void logoutUser(String username) {
     synchronized (currentUsers) {
-      currentUsers.remove(user);
+      currentUsers.remove(username);
     }
   }
 }

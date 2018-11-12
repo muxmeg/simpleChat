@@ -15,7 +15,6 @@ public class LobbyService {
   // in the real application
   private final List<String> currentUsers = Collections.synchronizedList(new ArrayList<>());
   private final List<ChatMessage> messages = Collections.synchronizedList(new ArrayList<>());
-  ;
 
   private final AuthService authService;
 
@@ -25,31 +24,45 @@ public class LobbyService {
   }
 
   /**
-   * Login user.
+   * Add user.
    *
-   * @param userName user name.
+   * @param username user name.
    * @return was user logged in or not.
    */
-  public void userJoined(String userName) { // return sessionID here
-    currentUsers.add(userName);
+  public void userJoined(String username) {
+    currentUsers.add(username);
   }
 
   /**
-   * {@inheritDoc}
+   * Logout user.
+   * @param username name of the user.
    */
-  public void userLeave(String userName) {
-    currentUsers.remove(userName);
-    authService.logoutUser(userName);
+  public void userLeave(String username) {
+    currentUsers.remove(username);
+    authService.logoutUser(username);
   }
 
+  /**
+   * Find the users in lobby.
+   * @return list of usernames.
+   */
   public List<String> findUsers() {
     return currentUsers;
   }
 
+  /**
+   * Find message history.
+   * @param limit limit number of returned records.
+   * @return list of chat messages.
+   */
   public List<ChatMessage> findMessageHistory(int limit) {
     return messages.subList(Math.max(messages.size() - limit, 0), messages.size());
   }
 
+  /**
+   * Listener for new lobby messages.
+   * @param messageDTO chat message.
+   */
   public void onChatMessageReceive(ChatMessageDTO messageDTO) {
     messages.add(messageDTO.toEntity());
   }

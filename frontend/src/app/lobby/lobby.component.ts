@@ -17,6 +17,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   messages: ChatMessage[];
   userMessage: string;
   private subscriptions: any = [];
+  private readonly messageHistorySize = 30;
 
   constructor(private lobbyService: LobbyService, private authService: AuthService,
               private router: Router) {
@@ -26,7 +27,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.username = this.authService.username;
     this.lobbyService.joinLobby(this.username)
     .subscribe(() => {
-      this.lobbyService.findLobbyMessages().subscribe((value: ChatMessage[]) => {
+      this.lobbyService.findLobbyMessages(this.messageHistorySize).subscribe((value: ChatMessage[]) => {
         this.messages = value;
         const subscription = this.lobbyService.subscribeForMessages()
         .subscribe((chatMessage: ChatMessage) => {
@@ -37,7 +38,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
         this.subscriptions.push(subscription);
       });
       this.lobbyService.findLobbyUsers().subscribe((value: string[]) => {
-        this.users = value;
+        this.users = value.filter((username => this.username !== username));
         const subscription = this.lobbyService.subscribeForUserUpdates()
         .subscribe((chatUserUpdate: LobbyUserUpdate) => {
           if (chatUserUpdate.joined) {
