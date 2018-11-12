@@ -30,7 +30,9 @@ public class LobbyService {
    * @return was user logged in or not.
    */
   public void userJoined(String username) {
-    currentUsers.add(username);
+    if (!currentUsers.contains(username)) {
+      currentUsers.add(username);
+    }
   }
 
   /**
